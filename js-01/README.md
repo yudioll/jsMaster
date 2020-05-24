@@ -176,3 +176,25 @@ Array.prototype.myfilter = function (cb,arg) {
     return ret
 }
 ```
+* 实现函数bind 方法
+```js
+Function.prototype.mybind = function (context, ...args){
+    if(this === undefined || this === null) {
+        throw Error('connot read mybind propoty')
+    }
+
+    var self = this
+
+    var bfontion = function () {
+        return self.apply(this instanceof self ? 
+        this : 
+        context,  args.concat(Array.prototype.slice.call(arguments)))
+    }
+
+    // 原型链接上
+    bfontion.prototype = Object.create(self.prototype)
+
+    return bfontion
+
+}
+```

@@ -146,6 +146,46 @@ const b = a.myfilter((i)=>{
     return i>2
 })
 console.log(b)
+
+Function.prototype.mybind = function (context, ...args){
+    if(this === undefined || this === null) {
+        throw Error('connot read mybind propoty')
+    }
+
+    var self = this
+
+    var bfontion = function () {
+        return self.apply(this instanceof self ? this : context,  args.concat(Array.prototype.slice.call(arguments)))
+    }
+
+    // 原型链接上
+    bfontion.prototype = Object.create(self.prototype)
+
+    return bfontion
+
+}
+var obj1 = {
+    name:'aaa',
+    logName:function(){
+        console.log(this.name)
+        return this
+    }
+}
+var obj2 = {
+    name:'bbb',
+    logName:obj1.logName
+}
+
+console.log(obj1.logName.mybind(obj2)())
+
+let obj = {
+    a: function() {
+      console.log(this);
+    }
+  }
+let func = obj.a;
+func();
  */
+
 
 
