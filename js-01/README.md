@@ -1,7 +1,44 @@
-// 第一种es6
-let a = [1, 2, 3];
-/**
- * Array.prototype.mymap = function (cb,arg) {
+# js面试常见问题总结-day01
+## 数组扁平化的一些方法
+```js
+// 第一种es6 flat
+const a=[1,2,3,[4,[5]]]
+console.log(a.flat(Infinity))
+
+// 第二种
+const str=JSON.stringify(a)
+const newa=str.replace(/(\[|\])/g,'').split(',')
+
+// 第三种 reduce+递归
+function reducea(arr){
+    return arr.reduce((pre,cur)=>{
+        return pre.concat(Array.isArray(cur) ? reducea(cur) : cur)
+    },[])
+}
+
+//第四种 直接递归
+let ret=[]
+function flata(arr){
+    if(!arr.length) return ;
+    for(let i=0;i<arr.length;i++){
+        if(Array.isArray(arr[i])){
+            flata(arr[i])
+        }else{
+            ret.push(arr[i])
+        }
+    }
+}
+
+// 第五种 while 配合some
+while(a.some(Array.isArray)){
+    a=[].concat(...a)
+}
+```
+## 实现数组一些常用方法
+
+* 实现map
+```js
+Array.prototype.mymap = function (cb,arg) {
 
     // cb 必须是一个回调函数
     if(Object.prototype.toString.call(cb) !== '[object Function]'){
@@ -26,12 +63,9 @@ let a = [1, 2, 3];
     }
     return Ret
 }
-
-
-const b= a.mymap((k)=>{
-    return k+=1
-})
-console.log(b)
+```
+* 实现reduce方法
+```js
 Array.prototype.myreduce = function (cb,initval) {
 
     // cb 必须是一个回调函数
@@ -59,6 +93,8 @@ Array.prototype.myreduce = function (cb,initval) {
             }
         }
     }
+    if(k === len && reduce === undefined) 
+    throw new Error('Each element of the array is empty');
     for(; k < len; k++) {
         // 遍历原型链上的属性
         if(k in O){
@@ -67,11 +103,9 @@ Array.prototype.myreduce = function (cb,initval) {
     }
     return reduce
 }
-const b = a.myreduce((pre,cur)=>{
-    return pre+cur
-},1)
-console.log(b)
-
+```
+* 实现数组push方法
+```js
 Array.prototype.mypush=function (...items) {
     if(this === undefined || this === null) {
         throw Error('connot read mypush propoty')
@@ -90,9 +124,9 @@ Array.prototype.mypush=function (...items) {
     O.length=newlen
     return newlen
 }
-a.mypush(1,undefined,3,4)
-console.log(a)
-
+```
+* 实现数组pop方法
+```js
 Array.prototype.mypop=function () {
     if(this === undefined || this === null) {
         throw Error('connot read mypush propoty')
@@ -111,9 +145,9 @@ Array.prototype.mypop=function () {
     return ret
 
 }
-console.log(a.mypop())
-console.log(a)
-
+```
+* 实现数组filter方法
+```js
 Array.prototype.myfilter = function (cb,arg) {
 
     // cb 必须是一个回调函数
@@ -141,11 +175,4 @@ Array.prototype.myfilter = function (cb,arg) {
     }
     return ret
 }
-
-const b = a.myfilter((i)=>{
-    return i>2
-})
-console.log(b)
- */
-
-
+```
