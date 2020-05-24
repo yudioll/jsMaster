@@ -151,3 +151,45 @@ new 一个构造函数都发生了什么
 * 创建一个空对象
 * 这个空对象作为上下文传入构造函数
 * 新构造的对象作为new操作符的返回值
+
+注意点是new一个构造函数如果构造函数的返回值是一个对象则使用构造函数返回的对象，如果返回其他类型值构造函数会忽略返回值
+```js
+function Emporer(){
+    this.sn=function(){
+        return this
+    }
+    return 1
+}
+const a = new Emporer()
+console.log(a) //Emporer { sn: [Function] }
+/**
+ * 如果返回值是一个对象情况
+*/
+const tem={
+    name:'aaa'
+}
+function Emporer(){
+    this.name="bbb"
+    return tem
+}
+const a2=new Emporer()
+console.log(a2)//{ name: 'aaa' } 此时会废弃初始化上下文，直接返回全局的对象
+```
+## 显示修改函数上下文call和apply
+```js
+function fnres(){
+    var res=0
+    for(var i=0;i<arguments.length;i++){
+        res+=arguments[i]
+    }
+    this.res=res
+    console.log(this)
+    //{ name: 'obj1', res: 15 }
+    //{ name: 'obj2', res: 20 }
+}
+let obj1={name:'obj1'}
+let obj2={name:'obj2'}
+fnres.apply(obj1,[1,2,3,4,5])
+fnres.apply(obj2,[2,3,4,5,6])
+// call 类似就是传递参数时需要统一列出来
+```
