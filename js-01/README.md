@@ -198,3 +198,35 @@ Function.prototype.mybind = function (context, ...args){
 
 }
 ```
+* 实现call/apply
+```js
+Function.prototype.myCall = function (context, ...args) {
+    if (typeof context === 'object') {
+        context = context || window
+    } else {
+        context = Object.create(null)
+    }
+    let fn = Symbol()
+    context[fn] = this
+
+    let ret = context[fn](...args)
+    delete context[fn]
+
+    return ret
+}
+// apply
+Function.prototype.myApply= function (context, args) {
+    if (typeof context === 'object') {
+        context = context || window
+    } else {
+        context = Object.create(null)
+    }
+    let fn = Symbol()
+    context[fn] = this
+
+    let ret = context[fn](...args)
+    delete context[fn]
+
+    return ret
+}
+```

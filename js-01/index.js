@@ -185,7 +185,44 @@ let obj = {
   }
 let func = obj.a;
 func();
- */
 
+Function.prototype.newCall = function (context) {
+    console.log(this)
+    context.fn = this;  // this 指的是 say 函数
+    context.fn();
+    delete context.fn;
+}
+
+var person = {
+    name: "jayChou"
+};
+
+var say = function() {
+    console.log(this)
+    console.log(this.name);
+}
+
+say.newCall(person);  // jayChou
+ */
+Function.prototype.myApply= function (context, args) {
+    if (typeof context === 'object') {
+        context = context || global
+    } else {
+        context = Object.create(null)
+    }
+    let fn = Symbol()
+    context[fn] = this
+
+    let ret = context[fn](...args)
+    delete context[fn]
+
+    return ret
+}
+
+let say=function(name,age){
+    return name+':'+age
+}
+const str = say.myApply(null,['asd',10])
+console.log(str)
 
 
