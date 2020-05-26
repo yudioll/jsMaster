@@ -203,7 +203,7 @@ var say = function() {
 }
 
 say.newCall(person);  // jayChou
- */
+
 Function.prototype.myApply= function (context, args) {
     if (typeof context === 'object') {
         context = context || global
@@ -224,5 +224,28 @@ let say=function(name,age){
 }
 const str = say.myApply(null,['asd',10])
 console.log(str)
+ */
+
+// 实现浅拷贝
+function shallowClone (target) {
+    if(typeof target === 'object' && target !==null) {
+        // 克隆的目标类型
+        const cloneTarget = Array.isArray(target) ? [] : {}
+        for( let prop in target) {
+            // 过滤继承属性 hasOwnProperty
+            if(target.hasOwnProperty(prop)) {
+                cloneTarget[prop] = target[prop]
+            }
+        }
+        return cloneTarget
+    } else {
+        return target
+    }
+}
+const a1 = [1,2,3,4,{name:'asd'}]
+const b1 = shallowClone(a1)
+b1[4].name='sss'
+console.log(a1)
+console.log(b1)
 
 

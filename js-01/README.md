@@ -230,3 +230,22 @@ Function.prototype.myApply= function (context, args) {
     return ret
 }
 ```
+* 数组中的浅拷贝和深拷贝
+```js
+// 实现浅拷贝
+function shallowClone (target) {
+    if(typeof target === 'object' && target !==null) {
+        // 克隆的目标类型
+        const cloneTarget = Array.isArray(target) ? [] : {}
+        for( let prop in target) {
+            // 过滤继承属性 hasOwnProperty
+            if(target.hasOwnProperty(prop)) {
+                cloneTarget[prop] = target[prop]
+            }
+        }
+        return cloneTarget
+    } else {
+        return target
+    }
+}
+```
