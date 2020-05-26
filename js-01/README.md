@@ -232,7 +232,7 @@ Function.prototype.myApply= function (context, args) {
 ```
 * 数组中的浅拷贝和深拷贝
 ```js
-// 实现浅拷贝
+// 实现浅拷贝-1
 function shallowClone (target) {
     if(typeof target === 'object' && target !==null) {
         // 克隆的目标类型
